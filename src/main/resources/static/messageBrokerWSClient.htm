@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    
+</head>
+<body>
+    Heloo
+    <script  type="text/javascript">
+        
+        console.log("Client")
+        var webSocket = new WebSocket("ws://localhost:8080/greeting")
+
+        var stompClient = Stomp.over(webSocket);
+
+        function onConected() {
+            stompClient.subscribe("/topic/hello", onMessage)
+            console.log("connected.")
+            stompClient.send("/topic/hello", {}, "A Client connected")
+        }
+
+        function onError() {
+            console.log('Error occurred')
+        }
+
+        function onMessage(msg)
+        {
+            console.log("Message received:" + msg);
+        }
+
+         stompClient.connect({}, onConected, onError);
+// send: stompClient.send("/topic/hello", {}, "duck")
+    </script>
+</body>
+</html>
